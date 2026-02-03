@@ -1,0 +1,27 @@
+[
+    {
+        "type": "v2ray",
+        "set": "AI",
+        "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/refs/heads/master/data/category-ai-!cn"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://ruleset.skk.moe/List/non_ip/ai.conf"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Claude/Claude.list"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/OpenAI/OpenAI.list"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Gemini/Gemini.list"
+    }
+]
