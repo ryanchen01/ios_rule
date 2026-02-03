@@ -10,10 +10,10 @@ def parse(data: str) -> list[str]:
     parsed = [line for line in lines if line and not line.startswith('#')]
     return parsed
 
-def remove_duplicates(rules_collection: dict) -> dict:
+def remove_duplicates(rules_collection: dict) -> dict[str, list[str]]:
     for set_name, rules in rules_collection.items():
         for rule_type in rules:
-            rules_collection[set_name][rule_type] = list(set(rules[rule_type]))
+            rules_collection[set_name][rule_type] = sorted(list(set(rules[rule_type])))
     return rules_collection
 
 def empty_rules_dict() -> dict[str, list[str]]:

@@ -29,11 +29,11 @@ def to_file(rules_collection: dict):
                 f.write(f"DOMAIN,{domain}\n")
             for suffix in rules["domain-suffix"]:
                 f.write(f"DOMAIN-SUFFIX,{suffix}\n")
+            for keyword in rules["domain-keyword"]:
+                f.write(f"DOMAIN-KEYWORD,{keyword}\n")
             for rule in rules["ipcidr"]:
                 if "/" not in rule:
                     rule += "/32"
                 f.write(f"IP-CIDR,{rule}\n")
-            for keyword in rules["domain-keyword"]:
-                f.write(f"DOMAIN-KEYWORD,{keyword}\n")
             for dest_port in rules["dest-port"]:
                 f.write(f"DEST-PORT,{dest_port}\n")

@@ -3,6 +3,7 @@ import json
 import utils
 import v2ray
 import surge
+import clash
 
 def add_rules(rules_collection: dict, set_name: str, rules: dict[str, list[str]]):
     if set_name not in rules_collection:
@@ -45,5 +46,6 @@ def main():
 
     rules_collection = utils.remove_duplicates(rules_collection)
     surge.to_file(rules_collection)
+    clash.to_file(rules_collection)
 if __name__ == "__main__":
     main()
