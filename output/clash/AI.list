@@ -29,6 +29,7 @@ payload:
   - DOMAIN,openaicom.imgix.net
   - DOMAIN,openaicomproductionae4b.blob.core.windows.net
   - DOMAIN,openrouter.ai
+  - DOMAIN,ppl-ai-file-upload.s3.amazonaws.com
   - DOMAIN,pplx-res.cloudinary.com
   - DOMAIN,production-openaicom-storage.azureedge.net
   - DOMAIN,robinfrontend-pa.googleapis.com
@@ -56,10 +57,12 @@ payload:
   - DOMAIN-SUFFIX,cici.com
   - DOMAIN-SUFFIX,ciciai.com
   - DOMAIN-SUFFIX,ciciaicdn.com
+  - DOMAIN-SUFFIX,clau.de
   - DOMAIN-SUFFIX,claude.ai
   - DOMAIN-SUFFIX,claude.com
   - DOMAIN-SUFFIX,claudemcpclient.com
   - DOMAIN-SUFFIX,claudeusercontent.com
+  - DOMAIN-SUFFIX,clawhub.ai
   - DOMAIN-SUFFIX,client-api.arkoselabs.com
   - DOMAIN-SUFFIX,clipdrop.co
   - DOMAIN-SUFFIX,cloudcode-pa.googleapis.com
@@ -83,6 +86,7 @@ payload:
   - DOMAIN-SUFFIX,deepmind.google
   - DOMAIN-SUFFIX,devin.ai
   - DOMAIN-SUFFIX,diabrowser.com
+  - DOMAIN-SUFFIX,diabrowser.engineering
   - DOMAIN-SUFFIX,dify.ai
   - DOMAIN-SUFFIX,dola.com
   - DOMAIN-SUFFIX,duck.ai
@@ -101,6 +105,7 @@ payload:
   - DOMAIN-SUFFIX,grok.com
   - DOMAIN-SUFFIX,grok.x.com
   - DOMAIN-SUFFIX,groq.com
+  - DOMAIN-SUFFIX,h2o.ai
   - DOMAIN-SUFFIX,hf.co
   - DOMAIN-SUFFIX,hf.space
   - DOMAIN-SUFFIX,host.livekit.cloud
@@ -116,6 +121,7 @@ payload:
   - DOMAIN-SUFFIX,labs.google.com
   - DOMAIN-SUFFIX,launchdarkly.com
   - DOMAIN-SUFFIX,liveperson.net
+  - DOMAIN-SUFFIX,lovart.ai
   - DOMAIN-SUFFIX,lpsnmedia.net
   - DOMAIN-SUFFIX,makersuite.google.com
   - DOMAIN-SUFFIX,manus.im
@@ -135,6 +141,7 @@ payload:
   - DOMAIN-SUFFIX,openaiapi-site.azureedge.net
   - DOMAIN-SUFFIX,openaicom.imgix.net
   - DOMAIN-SUFFIX,openart.ai
+  - DOMAIN-SUFFIX,openclaw.ai
   - DOMAIN-SUFFIX,openrouter.ai
   - DOMAIN-SUFFIX,oystermercury.top
   - DOMAIN-SUFFIX,perplexity.ai
@@ -147,6 +154,7 @@ payload:
   - DOMAIN-SUFFIX,segment.io
   - DOMAIN-SUFFIX,sentry.io
   - DOMAIN-SUFFIX,sora.com
+  - DOMAIN-SUFFIX,spicywriter.com
   - DOMAIN-SUFFIX,stripe.com
   - DOMAIN-SUFFIX,trae.ai
   - DOMAIN-SUFFIX,turn.livekit.cloud
