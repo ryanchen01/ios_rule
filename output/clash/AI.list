@@ -92,6 +92,9 @@ payload:
   - DOMAIN-SUFFIX,duck.ai
   - DOMAIN-SUFFIX,elevenlabs.com
   - DOMAIN-SUFFIX,elevenlabs.io
+  - DOMAIN-SUFFIX,envato-static.com
+  - DOMAIN-SUFFIX,envato.com
+  - DOMAIN-SUFFIX,envatousercontent.com
   - DOMAIN-SUFFIX,events.statsigapi.net
   - DOMAIN-SUFFIX,featuregates.org
   - DOMAIN-SUFFIX,g.ai
@@ -128,6 +131,7 @@ payload:
   - DOMAIN-SUFFIX,manuscdn.com
   - DOMAIN-SUFFIX,marscode.com
   - DOMAIN-SUFFIX,meta.ai
+  - DOMAIN-SUFFIX,minimax.io
   - DOMAIN-SUFFIX,mistral.ai
   - DOMAIN-SUFFIX,notebooklm.google
   - DOMAIN-SUFFIX,notebooklm.google.com
@@ -155,7 +159,9 @@ payload:
   - DOMAIN-SUFFIX,sentry.io
   - DOMAIN-SUFFIX,sora.com
   - DOMAIN-SUFFIX,spicywriter.com
+  - DOMAIN-SUFFIX,stitch.withgoogle.com
   - DOMAIN-SUFFIX,stripe.com
+  - DOMAIN-SUFFIX,themeforest.net
   - DOMAIN-SUFFIX,trae.ai
   - DOMAIN-SUFFIX,turn.livekit.cloud
   - DOMAIN-SUFFIX,windsurf.build
