@@ -23,5 +23,10 @@
         "type": "surge",
         "set": "AI",
         "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Gemini/Gemini.list"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://ruleset.skk.moe/List/non_ip/apple_intelligence.conf"
     }
 ]
