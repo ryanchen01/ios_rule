@@ -10,6 +10,9 @@ DOMAIN,antigravity.google
 DOMAIN,antigravity.googleapis.com
 DOMAIN,api.github.com
 DOMAIN,api.jetbrains.ai
+DOMAIN,apple-relay.apple.com
+DOMAIN,apple-relay.cloudflare.com
+DOMAIN,apple-relay.fastly-edge.com
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,cdn.usefathom.com
 DOMAIN,chat.openai.com.cdn.cloudflare.net
@@ -20,8 +23,10 @@ DOMAIN,copilot-telemetry-service.githubusercontent.com
 DOMAIN,copilot-telemetry.githubusercontent.com
 DOMAIN,copilot-workspace.githubnext.com
 DOMAIN,copilotprodattachments.blob.core.windows.net
+DOMAIN,cp4.cloudflare.com
 DOMAIN,daily-cloudcode-pa.googleapis.com
 DOMAIN,gateway.ai.cloudflare.com
+DOMAIN,gspe1-ssl.ls.apple.com
 DOMAIN,jules.google.com
 DOMAIN,makersuite.google.com
 DOMAIN,notebooklm-pa.googleapis.com
