@@ -28,5 +28,10 @@
         "type": "surge",
         "set": "AI",
         "url": "https://ruleset.skk.moe/List/non_ip/apple_intelligence.conf"
+    },
+    {
+        "type": "surge",
+        "set": "AI",
+        "url": "https://raw.githubusercontent.com/xpdigital/Apple-Rule/refs/heads/main/Apple-AI.list"
     }
 ]
