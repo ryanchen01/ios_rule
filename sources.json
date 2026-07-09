@@ -33,5 +33,10 @@
         "type": "surge",
         "set": "AI",
         "url": "https://raw.githubusercontent.com/xpdigital/Apple-Rule/refs/heads/main/Apple-AI.list"
+    },
+    {
+        "type": "surge",
+        "set": "Google",
+        "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/refs/heads/master/rule/Surge/Google/Google.list"
     }
 ]
