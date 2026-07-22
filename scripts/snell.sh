@@ -110,9 +110,10 @@ display_surge_config() {
 
 usage() {
     cat <<EOF
-Usage: $0 [--release | --beta]
+Usage: $0 [--release | --rc | --beta]
 
   --release  Install the latest stable Snell release
+  --rc       Install the latest Snell release candidate
   --beta     Install the latest Snell v6 beta
   -h, --help Show this help message
 EOF
@@ -122,6 +123,9 @@ CHANNEL=""
 case "${1:-}" in
     --release)
         CHANNEL="release"
+        ;;
+    --rc)
+        CHANNEL="rc"
         ;;
     --beta)
         CHANNEL="beta"
@@ -192,83 +196,139 @@ if [ -f "/usr/local/bin/snell-server" ]; then
     print_status "Existing Snell server installation detected"
     
     # Get current version
-    CURRENT_VERSION=$(/usr/local/bin/snell-server --version 2>/dev/null | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+)?' | head -n 1 || true)
+    CURRENT_VERSION=$(
+        /usr/local/bin/snell-server --version 2>&1 |
+        grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+|rc[0-9]*)?' |
+        head -n 1
+    )
     CURRENT_VERSION=${CURRENT_VERSION:-unknown}
     print_status "Current version: $CURRENT_VERSION"
 else
     print_status "No existing installation found, performing fresh installation"
 fi
 
-# Choose the stable or beta channel. Keep the current channel as the default
-# when updating an existing beta installation.
-if [ -z "$CHANNEL" ]; then
-    DEFAULT_CHOICE="1"
-    DEFAULT_LABEL="release"
-    if [[ "$CURRENT_VERSION" =~ b[0-9]+$ ]]; then
-        DEFAULT_CHOICE="2"
-        DEFAULT_LABEL="beta"
-    fi
+# Scan all sources once, before asking the user to choose a channel. This keeps
+# unavailable channels out of the menu and lets the selected result be reused.
+discover_available_downloads() {
+    local source_url page matches all_downloads
 
-    if [ -t 0 ]; then
-        echo ""
-        echo "Select the Snell version channel:"
-        echo "  1) Latest release"
-        echo "  2) Latest v6 beta"
-        while true; do
-            read -r -p "Choice [${DEFAULT_CHOICE} - ${DEFAULT_LABEL}]: " CHANNEL_CHOICE
-            CHANNEL_CHOICE=${CHANNEL_CHOICE:-$DEFAULT_CHOICE}
-            case "$CHANNEL_CHOICE" in
-                1)
-                    CHANNEL="release"
-                    break
-                    ;;
-                2)
-                    CHANNEL="beta"
-                    break
-                    ;;
-                *)
-                    print_warning "Please enter 1 or 2."
-                    ;;
-            esac
-        done
-    else
-        CHANNEL="$DEFAULT_LABEL"
-        print_status "No interactive terminal detected; using the $CHANNEL channel"
-    fi
-fi
-
-find_latest_download() {
-    local source_url page download_file pattern
-
-    if [ "$CHANNEL" = "beta" ]; then
-        pattern="snell-server-v6\.[0-9]+\.[0-9]+b[0-9]+-${ARCH_SUFFIX}\.zip"
-    else
-        pattern="snell-server-v[0-9]+\.[0-9]+\.[0-9]+-${ARCH_SUFFIX}\.zip"
-    fi
-
+    all_downloads=""
     for source_url in \
         "https://kb.nssurge.com/surge-knowledge-base/release-notes/snell" \
         "https://kb.nssurge.com/surge-knowledge-base/zh/release-notes/snell" \
         "https://dl.nssurge.com/snell/"; do
         if page=$(curl -fsSL --connect-timeout 10 --max-time 30 "$source_url"); then
-            download_file=$(printf '%s' "$page" | grep -oE "$pattern" | sort -Vu | tail -n 1 || true)
-            if [ -n "$download_file" ]; then
-                printf '%s\n' "$download_file"
-                return 0
+            matches=$(printf '%s' "$page" |
+                grep -oE "snell-server-v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+|rc[0-9]*)?-${ARCH_SUFFIX}\.zip" || true)
+            if [ -n "$matches" ]; then
+                all_downloads="${all_downloads}${all_downloads:+$'\n'}${matches}"
             fi
         fi
     done
 
-    return 1
+    AVAILABLE_RELEASE=$(printf '%s\n' "$all_downloads" |
+        grep -E "^snell-server-v[0-9]+\.[0-9]+\.[0-9]+-${ARCH_SUFFIX}\.zip$" |
+        sort -Vu | tail -n 1 || true)
+    AVAILABLE_RC=$(printf '%s\n' "$all_downloads" |
+        grep -E "^snell-server-v6\.[0-9]+\.[0-9]+rc[0-9]*-${ARCH_SUFFIX}\.zip$" |
+        sort -Vu | tail -n 1 || true)
+    AVAILABLE_BETA=$(printf '%s\n' "$all_downloads" |
+        grep -E "^snell-server-v6\.[0-9]+\.[0-9]+b[0-9]+-${ARCH_SUFFIX}\.zip$" |
+        sort -Vu | tail -n 1 || true)
+
+    [ -n "$AVAILABLE_RELEASE" ] || [ -n "$AVAILABLE_RC" ] || [ -n "$AVAILABLE_BETA" ]
 }
 
-print_status "Fetching latest Snell $CHANNEL version..."
-if ! DOWNLOAD_FILE=$(find_latest_download); then
-    print_error "Could not determine the latest Snell $CHANNEL version for $ARCH_SUFFIX."
+channel_download() {
+    case "$1" in
+        release) printf '%s\n' "$AVAILABLE_RELEASE" ;;
+        rc)      printf '%s\n' "$AVAILABLE_RC" ;;
+        beta)    printf '%s\n' "$AVAILABLE_BETA" ;;
+    esac
+}
+
+channel_label() {
+    case "$1" in
+        release) printf '%s\n' "release" ;;
+        rc)      printf '%s\n' "release candidate" ;;
+        beta)    printf '%s\n' "beta" ;;
+    esac
+}
+
+print_status "Scanning for available Snell versions..."
+if ! discover_available_downloads; then
+    print_error "Could not find any Snell downloads for $ARCH_SUFFIX."
     exit 1
 fi
 
-LATEST_VER=$(printf '%s' "$DOWNLOAD_FILE" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+)?')
+AVAILABLE_CHANNELS=()
+AVAILABLE_FILES=()
+for candidate_channel in release rc beta; do
+    candidate_file=$(channel_download "$candidate_channel")
+    if [ -n "$candidate_file" ]; then
+        AVAILABLE_CHANNELS+=("$candidate_channel")
+        AVAILABLE_FILES+=("$candidate_file")
+    fi
+done
+
+# Keep an installed prerelease channel as the default. Otherwise prefer stable.
+DEFAULT_CHANNEL="release"
+if [[ "$CURRENT_VERSION" =~ rc[0-9]*$ ]]; then
+    DEFAULT_CHANNEL="rc"
+elif [[ "$CURRENT_VERSION" =~ b[0-9]+$ ]]; then
+    DEFAULT_CHANNEL="beta"
+fi
+
+DEFAULT_CHOICE=""
+for index in "${!AVAILABLE_CHANNELS[@]}"; do
+    if [ "${AVAILABLE_CHANNELS[$index]}" = "$DEFAULT_CHANNEL" ]; then
+        DEFAULT_CHOICE=$((index + 1))
+        break
+    fi
+done
+
+if [ -z "$CHANNEL" ]; then
+    if [ -t 0 ]; then
+        echo ""
+        echo "Select the Snell version channel:"
+        for index in "${!AVAILABLE_CHANNELS[@]}"; do
+            available_version=$(printf '%s' "${AVAILABLE_FILES[$index]}" |
+                grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+|rc[0-9]*)?')
+            printf '  %d) Latest %s (%s)\n' \
+                "$((index + 1))" "$(channel_label "${AVAILABLE_CHANNELS[$index]}")" "$available_version"
+        done
+
+        # If the preferred channel was not discovered, default to the first
+        # available option for an interactive selection only.
+        DEFAULT_CHOICE=${DEFAULT_CHOICE:-1}
+        DEFAULT_LABEL=$(channel_label "${AVAILABLE_CHANNELS[$((DEFAULT_CHOICE - 1))]}")
+        while true; do
+            read -r -p "Choice [${DEFAULT_CHOICE} - ${DEFAULT_LABEL}]: " CHANNEL_CHOICE
+            CHANNEL_CHOICE=${CHANNEL_CHOICE:-$DEFAULT_CHOICE}
+            if [[ "$CHANNEL_CHOICE" =~ ^[0-9]+$ ]] &&
+                [ "$CHANNEL_CHOICE" -ge 1 ] &&
+                [ "$CHANNEL_CHOICE" -le "${#AVAILABLE_CHANNELS[@]}" ]; then
+                CHANNEL="${AVAILABLE_CHANNELS[$((CHANNEL_CHOICE - 1))]}"
+                break
+            fi
+            print_warning "Please enter a number from 1 to ${#AVAILABLE_CHANNELS[@]}."
+        done
+    elif [ -n "$DEFAULT_CHOICE" ]; then
+        CHANNEL="$DEFAULT_CHANNEL"
+        print_status "No interactive terminal detected; using the $CHANNEL channel"
+    else
+        print_error "The default $DEFAULT_CHANNEL channel is unavailable. Specify --release, --rc, or --beta."
+        exit 1
+    fi
+fi
+
+DOWNLOAD_FILE=$(channel_download "$CHANNEL")
+if [ -z "$DOWNLOAD_FILE" ]; then
+    print_error "No Snell $CHANNEL download is currently available for $ARCH_SUFFIX."
+    exit 1
+fi
+
+LATEST_VER=$(printf '%s' "$DOWNLOAD_FILE" | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+|rc[0-9]*)?')
 print_success "Latest $CHANNEL version found: $LATEST_VER"
 
 # Check if update is needed
