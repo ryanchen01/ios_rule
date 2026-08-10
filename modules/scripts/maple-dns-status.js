@@ -1,9 +1,21 @@
-const userId = $argument?.trim();
+const rawArgument =
+  typeof $argument === "undefined"
+    ? "<undefined>"
+    : JSON.stringify($argument);
+
+const userId =
+  typeof $argument === "string"
+    ? $argument.trim()
+    : "";
 
 if (!userId || !/^[a-zA-Z0-9-]+$/.test(userId)) {
   $done({
     title: "Maple DNS",
-    content: "Invalid or missing User ID",
+    content: [
+      "Invalid or missing User ID",
+      `Raw $argument: ${rawArgument}`,
+      `Type: ${typeof $argument}`,
+    ].join("\n"),
     style: "error",
   });
 } else {
@@ -13,7 +25,12 @@ if (!userId || !/^[a-zA-Z0-9-]+$/.test(userId)) {
     if (error) {
       $done({
         title: "Maple DNS",
-        content: `Request failed\n${error}`,
+        content: [
+          `User ID: ${userId}`,
+          `URL: ${url}`,
+          "",
+          `Request failed: ${error}`,
+        ].join("\n"),
         style: "error",
       });
       return;
@@ -22,7 +39,12 @@ if (!userId || !/^[a-zA-Z0-9-]+$/.test(userId)) {
     if (response.status !== 200) {
       $done({
         title: "Maple DNS",
-        content: `HTTP ${response.status}`,
+        content: [
+          `User ID: ${userId}`,
+          `URL: ${url}`,
+          "",
+          `HTTP ${response.status}`,
+        ].join("\n"),
         style: "error",
       });
       return;
@@ -60,6 +82,7 @@ if (!userId || !/^[a-zA-Z0-9-]+$/.test(userId)) {
       $done({
         title: "Maple DNS",
         content: [
+          `User ID: ${userId}`,
           `Used: ${formatNumber(used)} / ${formatNumber(limit)} (${usedPercent.toFixed(2)}%)`,
           `Remaining: ${formatNumber(remaining)} (${remainingPercent.toFixed(2)}%)`,
           `Client IP: ${data.client_ip ?? "Unknown"}`,
@@ -70,7 +93,12 @@ if (!userId || !/^[a-zA-Z0-9-]+$/.test(userId)) {
     } catch (e) {
       $done({
         title: "Maple DNS",
-        content: `Unable to parse response\n${e.message}`,
+        content: [
+          `User ID: ${userId}`,
+          `URL: ${url}`,
+          "",
+          `Unable to parse response: ${e.message}`,
+        ].join("\n"),
         style: "error",
       });
     }
