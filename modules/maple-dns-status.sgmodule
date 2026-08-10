@@ -7,4 +7,4 @@
 APAD DNS = script-name=Maple DNS Status, update-interval=-1
 
 [Script]
-Maple DNS Status = type=generic, timeout=10, script-path=https://raw.githubusercontent.com/ryanchen01/ios_rule/refs/heads/main/modules/scripts/maple-dns-status.js, argument={{{UPDATE-INTERVAL}}}
+Maple DNS Status = type=generic, timeout=10, script-path=https://raw.githubusercontent.com/ryanchen01/ios_rule/refs/heads/main/modules/scripts/maple-dns-status.js, argument={{{USER_ID}}}
