@@ -1,0 +1,10 @@
+#!name=Instagram Music Unlock
+#!desc=Checks whether licensed audio from a configurable Instagram post is available
+#!category=Tools
+#!arguments=POST_URL:https://www.instagram.com/reel/REPLACE_WITH_SHORTCODE/
+
+[Panel]
+Instagram Music = script-name=Instagram Music Unlock, update-interval=-1
+
+[Script]
+Instagram Music Unlock = type=generic, timeout=20, script-path=https://raw.githubusercontent.com/ryanchen01/ios_rule/refs/heads/main/modules/scripts/instagram-music.js, argument={{{POST_URL}}}
