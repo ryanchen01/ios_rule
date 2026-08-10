@@ -5,6 +5,9 @@ const rawArgument =
 
 const post = parseInstagramPost(rawArgument);
 
+// Must be declared outside the block so checkNext() can access it.
+let requests = [];
+
 if (!post) {
   finish({
     content: [
@@ -20,7 +23,7 @@ if (!post) {
     style: "error",
   });
 } else {
-  const requests = [
+  requests = [
     {
       name: "post data",
       url: `${post.canonicalUrl}?__a=1&__d=dis`,
