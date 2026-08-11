@@ -231,7 +231,10 @@ discover_available_downloads() {
         sort -Vu | tail -n 1 || true)
     AVAILABLE_RC=$(printf '%s\n' "$all_downloads" |
         grep -E "^snell-server-v6\.[0-9]+\.[0-9]+rc[0-9]*-${ARCH_SUFFIX}\.zip$" |
-        sort -Vu | tail -n 1 || true)
+        # GNU version sort ranks a bare "rc" after "rc2". Snell's first v6
+        # release candidate was named "rc", so treat it as rc1 for sorting.
+        awk '{ sort_key = $0; sub(/rc-/, "rc1-", sort_key); print sort_key "\t" $0 }' |
+        sort -V -k1,1 | tail -n 1 | cut -f2- || true)
     AVAILABLE_BETA=$(printf '%s\n' "$all_downloads" |
         grep -E "^snell-server-v6\.[0-9]+\.[0-9]+b[0-9]+-${ARCH_SUFFIX}\.zip$" |
         sort -Vu | tail -n 1 || true)
