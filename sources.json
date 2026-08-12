@@ -32,7 +32,7 @@
     {
         "type": "surge",
         "set": "AI",
-        "url": "https://raw.githubusercontent.com/xpdigital/Apple-Rule/refs/heads/main/Apple-AI.list"
+        "url": "https://raw.githubusercontent.com/RocM301/Apple-Rule/refs/heads/main/Apple-AI.list"
     },
     {
         "type": "surge",
