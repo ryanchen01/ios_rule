@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "domain_suffix": [
+        "cdninstagram.com",
+        "facebook.com",
+        "facebook.net",
+        "fbcdn.ndet",
+        "instagr.am",
+        "instagram.com"
+      ],
+      "domain_keyword": [
+        "instagram"
+      ]
+    }
+  ]
+}
