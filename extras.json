@@ -1,7 +1,12 @@
 [
     {
-        "set": "AI",
+        "set": "Instagram",
         "rules": {
+            "domain-suffix": [
+                "facebook.net",
+                "facebook.com",
+                "fbcdn.ndet"
+            ]
         }
     }
 ]
