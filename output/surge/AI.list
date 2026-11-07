@@ -33,6 +33,7 @@ DOMAIN,geminiweb-pa.clients.google.com
 DOMAIN,geminiweb-pa.clients6.google.com
 DOMAIN,gspe1-ssl.ls.apple.com
 DOMAIN,guzzoni.apple.com
+DOMAIN,http-intake.logs.us5.datadoghq.com
 DOMAIN,inference.codeium.com
 DOMAIN,jules.google.com
 DOMAIN,makersuite.google.com
@@ -42,6 +43,7 @@ DOMAIN,mask-t.apple-dns.net
 DOMAIN,mask.apple-dns.net
 DOMAIN,notebooklm-pa.googleapis.com
 DOMAIN,notebooklm.googleapis.com
+DOMAIN,o1158394.ingest.us.sentry.io
 DOMAIN,o33249.ingest.sentry.io
 DOMAIN,o33249.ingest.us.sentry.io
 DOMAIN,openai-api.arkoselabs.com
@@ -54,6 +56,7 @@ DOMAIN,openaicomproductionae4b.blob.core.windows.net
 DOMAIN,openrouter.ai
 DOMAIN,ppl-ai-file-upload.s3.amazonaws.com
 DOMAIN,pplx-res.cloudinary.com
+DOMAIN,production-copilot-host-westus.webpubsub.azure.com
 DOMAIN,production-openaicom-storage.azureedge.net
 DOMAIN,robinfrontend-pa.googleapis.com
 DOMAIN,servd-anthropic-website.b-cdn.net
