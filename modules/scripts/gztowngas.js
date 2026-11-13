@@ -74,7 +74,9 @@
     const low = known && cfg && state.balance < cfg.threshold;
     const lines = ["户号 " + (cfg ? cfg.account : "未配置")];
     if (known) {
-      lines.push("应缴 ¥" + displayMoney(state.amount) + " · 更新 " + displayTime(state.checkedAt));
+      lines.push("余额 ¥" + displayMoney(state.balance) + " · 更新 " + displayTime(state.checkedAt));
+    } else {
+      lines.push("余额待查询");
     }
     if (error) lines.push("查询失败：" + error + (known ? "；上方为旧余额" : ""));
     if (cfg) lines.push("低于 ¥" + displayMoney(cfg.threshold) + " 提醒 · 每 " + cfg.hours + " 小时查询");
@@ -83,7 +85,7 @@
     }
     if (extra) lines.push(extra);
     return {
-      title: "广州港华 " + (known ? "¥" + displayMoney(state.balance) : "余额待查询"),
+      title: "广州港华",
       content: lines.join("\n"),
       style: error ? "error" : low ? "alert" : known ? "good" : "info"
     };
