@@ -1,0 +1,13 @@
+#!name=广州港华余额
+#!desc=显示气费余额，支持手动刷新、定时查询和低余额通知。无需 MITM。
+#!version=1.0.0
+#!category=Tools
+#!arguments=account,usession,threshold:20,interval_hours:6
+#!arguments-desc=account：10 位户号。usession：从自己的小程序请求中取得的会话参数，仅保存在本机模块参数中，不要公开。threshold：低余额提醒阈值，单位元，最多两位小数。interval_hours：自动查询间隔，单位小时，填 1–8760 的整数。低于阈值首次通知，持续低余额最多每天提醒一次。手动刷新立即查询，不改变后台定时。
+
+[Panel]
+GZTowngasBalance = title="广州港华余额",content="配置户号及会话参数后，点右侧刷新查询余额",style=info,script-name=GZTowngasPanel,update-interval=1
+
+[Script]
+GZTowngasPanel = type=generic,script-path=https://raw.githubusercontent.com/ryanchen01/ios_rule/refs/heads/main/modules/scripts/gztowngas.js,timeout=25,engine=jsc,argument="account={{{account}}}&usession={{{usession}}}&mode=panel&threshold={{{threshold}}}&interval_hours={{{interval_hours}}}"
+GZTowngasSchedule = type=cron,cronexp="0 * * * *",wake-system=true,script-path=https://raw.githubusercontent.com/ryanchen01/ios_rule/refs/heads/main/modules/scripts/gztowngas.js,timeout=25,engine=jsc,argument="account={{{account}}}&usession={{{usession}}}&mode=cron&threshold={{{threshold}}}&interval_hours={{{interval_hours}}}"
