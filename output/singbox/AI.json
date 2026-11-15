@@ -5,6 +5,7 @@
       "domain": [
         "7h15.ru1353t.1s.m4d3.by.5ukk4w.skk.moe",
         "ai.google.dev",
+        "aicode.googleapis.com",
         "aida.googleapis.com",
         "aisandbox-pa.googleapis.com",
         "alkalicore-pa.clients6.google.com",
@@ -24,6 +25,7 @@
         "browser-intake-datadoghq.com",
         "cdn.usefathom.com",
         "chat.openai.com.cdn.cloudflare.net",
+        "cloud.zed.dev",
         "cloudaicompanion.googleapis.com",
         "cloudcode-pa.googleapis.com",
         "copilot-proxy.githubusercontent.com",
@@ -33,6 +35,7 @@
         "copilotprodattachments.blob.core.windows.net",
         "cp4.cloudflare.com",
         "daily-cloudcode-pa.googleapis.com",
+        "daily-cloudcode-pa.sandbox.googleapis.com",
         "gateway.ai.cloudflare.com",
         "geminiweb-pa.clients.google.com",
         "geminiweb-pa.clients6.google.com",
