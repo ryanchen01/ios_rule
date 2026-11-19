@@ -1,26 +1,33 @@
-import requests
+from copy import deepcopy
 import json
+
+import requests
 import utils
 import v2ray
 import surge
 import clash
 import singbox
 
+DESKTOP_PLATFORMS = {"macos", "linux", "windows"}
+
+
 def add_rules(rules_collection: dict, set_name: str, rules: dict[str, list[str]]):
-    if set_name not in rules_collection:
-        rules_collection[set_name] = {
-            "ipcidr": [],
-            "domain": [],
-            "domain-keyword": [],
-            "domain-suffix": [],
-            "dest-port": []
-        }
-    rules_collection[set_name]["ipcidr"].extend(rules.get("ipcidr", []))
-    rules_collection[set_name]["domain"].extend(rules.get("domain", []))
-    rules_collection[set_name]["domain-keyword"].extend(rules.get("domain-keyword", []))
-    rules_collection[set_name]["domain-suffix"].extend(rules.get("domain-suffix", []))
-    rules_collection[set_name]["dest-port"].extend(rules.get("dest-port", []))
+    set_rules = rules_collection.setdefault(set_name, utils.empty_rules_dict())
+    for rule_type, values in set_rules.items():
+        values.extend(rules.get(rule_type, []))
     return rules_collection
+
+
+def rules_with_extras(rules_collection: dict, extras: list[dict], platforms: set[str]):
+    output_rules = deepcopy(rules_collection)
+    for extra in extras:
+        platform = extra.get("os")
+        if platform is not None and platform not in DESKTOP_PLATFORMS:
+            raise ValueError(f"Unknown OS in extras.json: {platform}")
+        if platform is None or platform in platforms:
+            add_rules(output_rules, extra["set"], extra["rules"])
+    return utils.remove_duplicates(output_rules)
+
 
 def main():
     with open('sources.json', 'r') as f:
@@ -37,17 +44,17 @@ def main():
             rules = v2ray.get_rules(data)
         elif source['type'] == 'surge':
             rules = surge.get_rules(data)
-        
+
+        rules["ipcidr-no-resolve"].extend(rules.pop("ipcidr"))
         rules_collection = add_rules(rules_collection, source['set'], rules)
     
     with open('extras.json', 'r') as f:
         extras = json.load(f)
-    for extra in extras:
-        rules_collection = add_rules(rules_collection, extra['set'], extra['rules'])
 
-    rules_collection = utils.remove_duplicates(rules_collection)
-    surge.to_file(rules_collection)
-    clash.to_file(rules_collection)
-    singbox.to_file(rules_collection)
+    surge_rules = rules_with_extras(rules_collection, extras, {"macos"})
+    desktop_rules = rules_with_extras(rules_collection, extras, DESKTOP_PLATFORMS)
+    surge.to_file(surge_rules)
+    clash.to_file(desktop_rules)
+    singbox.to_file(desktop_rules)
 if __name__ == "__main__":
     main()

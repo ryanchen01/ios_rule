@@ -297,8 +297,29 @@
         "siri"
       ],
       "ip_cidr": [
+        "153.61.208.0/20",
+        "160.79.104.0/21",
         "24.199.123.28/32",
         "64.23.132.171/32"
+      ]
+    },
+    {
+      "process_name": [
+        "Claude",
+        "Claude Code URL",
+        "Claude.exe",
+        "claude",
+        "claude-desktop",
+        "claude.exe"
+      ]
+    },
+    {
+      "process_path_regex": [
+        "^.*/\\.local/share/claude/versions/.*$",
+        "^/Applications/Claude\\.app/.*$",
+        "^/Users/.*/\\.local/share/claude/.*$",
+        "^/Users/.*/Applications/Claude\\ Code\\ URL\\ Handler\\.app/.*$",
+        "^/Users/.*/Library/Application\\ Support/Claude/.*$"
       ]
     }
   ]

@@ -13,11 +13,17 @@ def to_file(rules_collection: dict):
                 f.write(f"  - DOMAIN,{domain}\n")
             for suffix in rules["domain-suffix"]:
                 f.write(f"  - DOMAIN-SUFFIX,{suffix}\n")
-            for rule in rules["ipcidr"]:
+            for rule, no_resolve in utils.ipcidr_entries(rules):
                 if "/" not in rule:
                     rule += "/32"
+                if no_resolve:
+                    rule += ",no-resolve"
                 f.write(f"  - IP-CIDR,{rule}\n")
             for keyword in rules["domain-keyword"]:
                 f.write(f"  - DOMAIN-KEYWORD,{keyword}\n")
             for dest_port in rules["dest-port"]:
                 f.write(f"  - DST-PORT,{dest_port}\n")
+            for name in rules.get("process-name", []):
+                f.write(f"  - PROCESS-NAME,{name}\n")
+            for path in rules.get("process-path-wildcard", []):
+                f.write(f"  - PROCESS-PATH-WILDCARD,{path}\n")

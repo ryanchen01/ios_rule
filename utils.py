@@ -16,11 +16,19 @@ def remove_duplicates(rules_collection: dict) -> dict[str, list[str]]:
             rules_collection[set_name][rule_type] = sorted(list(set(rules[rule_type])))
     return rules_collection
 
+def ipcidr_entries(rules: dict[str, list[str]]) -> list[tuple[str, bool]]:
+    no_resolve = set(rules.get("ipcidr-no-resolve", []))
+    cidrs = set(rules["ipcidr"]) | no_resolve
+    return [(cidr, cidr in no_resolve) for cidr in sorted(cidrs)]
+
 def empty_rules_dict() -> dict[str, list[str]]:
     return {
         "ipcidr": [],
+        "ipcidr-no-resolve": [],
         "domain": [],
         "domain-keyword": [],
         "domain-suffix": [],
-        "dest-port": []
+        "dest-port": [],
+        "process-name": [],
+        "process-path-wildcard": [],
     }

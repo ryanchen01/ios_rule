@@ -8,5 +8,42 @@
                 "fbcdn.net"
             ]
         }
+    },
+    {
+        "set": "AI",
+        "rules": {
+            "ipcidr-no-resolve": [
+                "160.79.104.0/21",
+                "153.61.208.0/20"
+            ]
+        }
+    },
+    {
+        "set": "AI",
+        "os": "macos",
+        "rules": {
+            "process-name": ["Claude", "claude", "Claude Code URL"],
+            "process-path-wildcard": [
+                "/Applications/Claude.app/*",
+                "/Users/*/.local/share/claude/*",
+                "/Users/*/Applications/Claude Code URL Handler.app/*",
+                "/Users/*/Library/Application Support/Claude/*"
+            ]
+        }
+    },
+    {
+        "set": "AI",
+        "os": "linux",
+        "rules": {
+            "process-name": ["claude", "claude-desktop"],
+            "process-path-wildcard": ["*/.local/share/claude/versions/*"]
+        }
+    },
+    {
+        "set": "AI",
+        "os": "windows",
+        "rules": {
+            "process-name": ["claude.exe", "Claude.exe"]
+        }
     }
 ]

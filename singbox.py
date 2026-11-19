@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 import utils
 
@@ -20,11 +21,14 @@ def build_rule_set(rules: dict[str, list[str]]) -> dict:
         "domain": "domain",
         "domain-suffix": "domain_suffix",
         "domain-keyword": "domain_keyword",
-        "ipcidr": "ip_cidr",
     }
     for source_field, singbox_field in field_mapping.items():
         if rules[source_field]:
             address_rule[singbox_field] = rules[source_field]
+
+    cidrs = [cidr for cidr, _ in utils.ipcidr_entries(rules)]
+    if cidrs:
+        address_rule["ip_cidr"] = cidrs
 
     headless_rules = []
     if address_rule:
@@ -35,6 +39,19 @@ def build_rule_set(rules: dict[str, list[str]]) -> dict:
         # Ports must be a separate rule. Combining them with domains/IPs would
         # make sing-box apply AND semantics between the two field groups.
         headless_rules.append({"port": ports})
+
+    process_names = rules.get("process-name", [])
+    if process_names:
+        headless_rules.append({"process_name": process_names})
+
+    process_paths = rules.get("process-path-wildcard", [])
+    if process_paths:
+        # A separate rule lets either the executable name or path match.
+        patterns = [
+            re.escape(path).replace(r"\*", ".*").replace(r"\?", ".")
+            for path in process_paths
+        ]
+        headless_rules.append({"process_path_regex": [f"^{pattern}$" for pattern in patterns]})
 
     return {"version": 1, "rules": headless_rules}
 
