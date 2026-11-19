@@ -17,9 +17,11 @@ DOMAIN,apple-relay.fastly-edge.com
 DOMAIN,appsgenaiserver-pa.clients.google.com
 DOMAIN,appsgenaiserver-pa.clients6.google.com
 DOMAIN,appsgenaiserver-pa.googleapis.com
+DOMAIN,bridge.claudeusercontent.com
 DOMAIN,browser-intake-datadoghq.com
 DOMAIN,cdn.usefathom.com
 DOMAIN,chat.openai.com.cdn.cloudflare.net
+DOMAIN,claude.site
 DOMAIN,cloud.zed.dev
 DOMAIN,cloudaicompanion.googleapis.com
 DOMAIN,cloudcode-pa.googleapis.com
